@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "7f3d5268-8a8a-4b3f-bd7b-07d00417197f",
+		"name": "Digesting chat api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11793196"
+	},
+	"item": [
+		{
+			"name": "Register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "marcos-sco",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "marcos@test.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SERVER_BASE_URL}}/register-user",
+					"host": [
+						"{{SERVER_BASE_URL}}"
+					],
+					"path": [
+						"register-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userId",
+							"value": "marcos_test_com",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "What is the capital of Paraguay",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SERVER_BASE_URL}}/chat",
+					"host": [
+						"{{SERVER_BASE_URL}}"
+					],
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chat Get Messages",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userId",
+							"value": "marcos_testaro_com",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SERVER_BASE_URL}}/get-messages",
+					"host": [
+						"{{SERVER_BASE_URL}}"
+					],
+					"path": [
+						"get-messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER_BASE_URL}}",
+					"host": [
+						"{{SERVER_BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

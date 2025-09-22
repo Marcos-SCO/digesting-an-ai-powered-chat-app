@@ -3,16 +3,21 @@ dotenv.config();
 
 const SERVER_BASE_URL = process.env.SERVER_BASE_URL;
 
-const https = require('https');
+import http from "http";
+import https from "https";
 
 function pingServer() {
     const url = SERVER_BASE_URL as string;
+
+    // Only use HTTPS in production, otherwise fallback to HTTP
+    const isProduction = process.env.NODE_ENV === "production";
+    const lib = isProduction ? https : http;
 
     if (!SERVER_BASE_URL) {
         throw new Error("SERVER_BASE_URL is not defined in environment variables");
     }
 
-    https.get(url, (res: any) => {
+    lib.get(url, (res: any) => {
         const { statusCode } = res;
 
         const requestOk = statusCode === 200;

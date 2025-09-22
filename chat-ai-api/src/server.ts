@@ -10,7 +10,8 @@ import { error } from "console";
 import { db } from './config/database.js';
 import { chats, users } from './db/schema.js';
 import { eq } from 'drizzle-orm';
-import { ChatCompletionNamedToolChoice } from 'openai/resources';
+import { ChatCompletionMessageParam, ChatCompletionNamedToolChoice } from 'openai/resources';
+import { Content } from "openai/resources/containers/files.js";
 
 dotenv.config();
 
@@ -122,12 +123,28 @@ app.post('/chat', async (req: Request, res: Response): Promise<any> => {
             return res.status(404).json({ error: 'User not found in database, please register' });
         }
 
+        // fetch users past messages for context
+        const chatHistory = await db
+            .select()
+            .from(chats)
+            .where(eq(chats.userId, userId))
+            .orderBy(chats.createdAt)
+            .limit(10);
+
+        // Format the chat history for Open AI
+        const conversation: ChatCompletionMessageParam[] = chatHistory.flatMap((chat) => [
+            { role: 'user', content: chat.message },
+            { role: 'assistant', content: chat.reply },
+        ] as any);
+
+        // Add latest user messages to the conversation
+        conversation.push({ role: 'user', content: message });
+
         // Send message to open router model
         const response = await openaiClient.chat.completions.create({
             model: 'deepseek/deepseek-chat-v3.1:free',
-            messages: [
-                { role: 'user', content: message }
-            ]
+            // messages: [{ role: 'user', content: message }]
+            messages: conversation as ChatCompletionMessageParam[],
         } as any);
 
         const aiMessage: string = response.choices[0]?.message.content ?? 'No response from AI';

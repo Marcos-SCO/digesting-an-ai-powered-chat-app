@@ -1,6 +1,14 @@
 <script setup lang="ts">
   import { ref } from "vue";
+
+  import { useUserStore } from "../stores/user";
+  import { useRouter } from "vue-router";
+
   import robotImage from "../assets/robot.png";
+  import axios from "axios";
+
+  const userStore = useUserStore();
+  const router = useRouter();
 
   const name = ref("");
   const email = ref("");
@@ -13,11 +21,34 @@
       error.value = "Name and email are required";
       return;
     }
+
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/register-user`, {
+        name: name.value,
+        email: email.value,
+      });
+
+      userStore.setUser({
+        userId: data.userId,
+        name: data.name,
+      });
+
+      router.push("/chat");
+    } catch (err) {
+      console.log(err);
+
+      error.value = "Something went wrong, please try again";
+    } finally {
+      loading.value = false;
+    }
   };
 </script>
 
 <template>
-  <div class="h-scree flex items-center justify-center bg-gray-900 text-white">
+  <div class="h-screen flex items-center justify-center bg-gray-900 text-white">
     <div class="p-8 bg-gray-800 rounded-lg shadow-lg w-full max-w-md">
       <img :src="robotImage" alt="Robot img" class="mx-auto w-24 h-24 mb-4" />
 

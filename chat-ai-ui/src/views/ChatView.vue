@@ -2,7 +2,7 @@
   import { onMounted, nextTick } from "vue";
   import { useUserStore } from "../stores/user";
   import { userChatStore } from "../stores/chat";
-  import { useRoute, useRouter } from "vue-router";
+  import { useRouter } from "vue-router";
 
   import Header from "../components/Header.vue";
   import ChatInput from "../components/ChatInput.vue";

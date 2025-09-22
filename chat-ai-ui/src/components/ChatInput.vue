@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <div class="-4 bg-gray-800 flex">
+  <div class="p-3 bg-gray-800 flex">
     <input
       v-model="message"
       @keyup.enter="sendMessage"
